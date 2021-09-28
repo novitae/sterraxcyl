@@ -1,4 +1,4 @@
-# S T E R R A X C Y L
+ # S T E R R A X C Y L
 ## A python program that allows you to put in an excel table followers and/or following of an aimed account, with detailed infos on them (see further).
 Very useful for OSINT on instagram accounts to determine a social circle of an aimed account.  
 It is an alternative to [Export List of Followers from Instagram](https://chrome-stats.com/d/hcdbfckhdcpepllecbkaaojfgipnpbpb), that has been zucced.
@@ -100,3 +100,4 @@ sterra --> writes the args and headers         logs in with requests, then retri
         the json are then extracted    ---> each infos contained in the list are
         and placed in a list.               written in their specific column.
 ```
+_don't hesistate to contact me if you have idea of things to add to this program ! discord `aet#8014` twitter `meakaaet`_
