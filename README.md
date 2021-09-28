@@ -34,9 +34,12 @@ Detailed usage : `sterraxcyl [-h] [-a] [-d D] [-p P] -t T -u U`
   -p P, --path P      #folder path where files will be exported and the credentials stored (by default in "sterraxcyl/")
   -t T, --target T    #what do you want to export ("followers", "following" or "both")
   -u U, --username U  #the instagram username of the aimed account
- #MORE TO BE ADDED SOON (export directory location, credential location, tor usage for long lists)
+ #MORE TO BE ADDED SOON (tor usage for long lists, csv format, quick report ... feel free to send me ideas (contact on my github profile))
 ```
-If the account you aim for is private, you must have access to it with the account for which you have entered the credentials.  
+
+**The program isn't very fast**, espacially for long lists (~ 20 min for 1000 followers).  
+The program have **never been blocked by instagram servers**, the longer list extracted was of 1400 followers.
+
 # What infos are exported ?
 By defaut :  
 - ID
