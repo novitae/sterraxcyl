@@ -38,7 +38,8 @@ Detailed usage : `sterraxcyl [-h] [-a] [-d D] [-p P] -t T -u U`
 ```
 
 **The program isn't very fast**, espacially for long lists (~ 20 min for 1000 followers).  
-The program have **never been blocked by instagram servers**, the longer list extracted was of 1400 followers.
+But it has **never been blocked by instagram servers**, the longer list extracted was of 1400 followers.  
+Slowly but surely as we say.
 
 # What infos are exported ?
 By defaut :  
