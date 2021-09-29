@@ -36,7 +36,6 @@ def Export(instructions, InfoList, rowN):
         else:
             ExcelSheet.cell(row = rowN, column = 19, value = '=HYPERLINK("{}", "{}")'.format(InfoList[17], InfoList[17])).style='Hyperlink'
         ExcelSheet.cell(row = rowN, column = 20, value = InfoList[18])
-        #ExcelSheet.cell(row = rowN, column = 21, value = int(InfoList[19]))
         ExcelSheet.cell(row = rowN, column = 21, value = InfoList[19])
         ExcelSheet.cell(row = rowN, column = 22, value = InfoList[20])
         ExcelSheet.cell(row = rowN, column = 23, value = InfoList[21])
@@ -73,7 +72,6 @@ def ConvertInfos(instructions, I, rowN):
         BPhone = I["business_phone_number"]
         CFacebook = I["connected_fb_page"]
         MutualFollowedBy = I["edge_mutual_followed_by"]["count"]
-        FacebookID = I["fbid"] #HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
         HasAREffect = I["has_ar_effects"]
         HasChannel = I["has_channel"]
         HasClips = I["has_clips"]
@@ -120,7 +118,6 @@ def makeFile(instructions): #Teableau excel de base
         ExcelSheet.cell(row = 1, column = 18, value = 'Business Phone Number')
         ExcelSheet.cell(row = 1, column = 19, value = 'Connected Facebook Page')
         ExcelSheet.cell(row = 1, column = 20, value = 'Mutual Followed By')
-        #ExcelSheet.cell(row = 1, column = 21, value = 'Facebook ID')
         ExcelSheet.cell(row = 1, column = 21, value = 'Has Effects')
         ExcelSheet.cell(row = 1, column = 22, value = 'Has Channel')
         ExcelSheet.cell(row = 1, column = 23, value = 'Has Clips')
