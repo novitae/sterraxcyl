@@ -2,8 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sterraxcyl',
-    version = '1.0',
+    version = '1.1',
     description = 'OSINT tool to export followers and/or following details of an instagram account to an excel table',
+    long_description = 'OSINT tool to export followers and/or following details of an instagram account to an excel table, see README of https://github.com/novitae/sterraxcyl',
     author = 'novitae',
     url = 'https://github.com/novitae/sterraxcyl',
     licence = 'GNU General Public License v3 (GPLv3)',

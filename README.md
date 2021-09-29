@@ -1,5 +1,5 @@
-# S T E R R A X C Y L
-## A python program that allows you to put in an excel table followers and/or following of an aimed account, with detailed infos on them (see further).
+ # S T E R R A X C Y L
+## A python program that allows you to put in an excel table followers and/or following of an aimed account, with detailed infos on them ([see further](https://github.com/novitae/sterraxcyl#what-infos-are-exported-)).
 Very useful for OSINT on instagram accounts to determine a social circle of an aimed account.  
 It is an alternative to [Export List of Followers from Instagram](https://chrome-stats.com/d/hcdbfckhdcpepllecbkaaojfgipnpbpb), that has been zucced.
 ### Here is the result for the accounts followed by instagram :
@@ -34,9 +34,13 @@ Detailed usage : `sterraxcyl [-h] [-a] [-d D] [-p P] -t T -u U`
   -p P, --path P      #folder path where files will be exported and the credentials stored (by default in "sterraxcyl/")
   -t T, --target T    #what do you want to export ("followers", "following" or "both")
   -u U, --username U  #the instagram username of the aimed account
- #MORE TO BE ADDED SOON (export directory location, credential location, tor usage for long lists)
+ #MORE TO BE ADDED SOON (tor usage for long lists, csv format, quick report ... feel free to send me ideas (contact on my github profile))
 ```
-If the account you aim for is private, you must have access to it with the account for which you have entered the credentials.  
+
+**The program isn't very fast**, espacially for long lists (~ 20 min for 1000 followers).  
+But it has **never been blocked by instagram servers**, the longer list extracted was of 1400 followers.  
+Slowly but surely as we say.
+
 # What infos are exported ?
 By defaut :  
 - ID
@@ -96,3 +100,4 @@ sterra --> writes the args and headers         logs in with requests, then retri
         the json are then extracted    ---> each infos contained in the list are
         and placed in a list.               written in their specific column.
 ```
+_don't hesistate to contact me if you have idea of things to add to this program ! discord `aet#8014` twitter `meakaaet`_

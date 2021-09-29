@@ -1,3 +1,9 @@
 Sterraxyl Changelog
 
 1.0 $ Sep. 28 2021 - Release of the program
+
+1.1 $ date - news
+	added the long description
+	changed little colored logo for "extracting following list ..." From instagram to python
+	added error message for if instagram detect spamming
+	removed "fbid" because nobody knows what it is (not a Facebook id)

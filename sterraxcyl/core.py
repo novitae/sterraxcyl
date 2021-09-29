@@ -36,18 +36,23 @@ def Export(instructions, InfoList, rowN):
         else:
             ExcelSheet.cell(row = rowN, column = 19, value = '=HYPERLINK("{}", "{}")'.format(InfoList[17], InfoList[17])).style='Hyperlink'
         ExcelSheet.cell(row = rowN, column = 20, value = InfoList[18])
-        ExcelSheet.cell(row = rowN, column = 21, value = int(InfoList[19]))
+        #ExcelSheet.cell(row = rowN, column = 21, value = int(InfoList[19]))
+        ExcelSheet.cell(row = rowN, column = 21, value = InfoList[19])
         ExcelSheet.cell(row = rowN, column = 22, value = InfoList[20])
         ExcelSheet.cell(row = rowN, column = 23, value = InfoList[21])
         ExcelSheet.cell(row = rowN, column = 24, value = InfoList[22])
         ExcelSheet.cell(row = rowN, column = 25, value = InfoList[23])
         ExcelSheet.cell(row = rowN, column = 26, value = InfoList[24])
-        ExcelSheet.cell(row = rowN, column = 27, value = InfoList[25])
     
     ExcelFile.save(fileName)
 
 def ConvertInfos(instructions, I, rowN):
-    I = I["graphql"]["user"]
+    try:
+        I = I["graphql"]["user"]
+    except KeyError:
+        if I['spam']:
+            print('[{}] Instagram noticed a suspicious activity.\nWe advise you to change of account, and to use delays between your requests with "-d" arg.'.format(cs('!', 'Red3')))
+            exit()
     Biography = I["biography"]
     Link = I["external_url"]
     Followers = I["edge_followed_by"]["count"]
@@ -68,16 +73,16 @@ def ConvertInfos(instructions, I, rowN):
         BPhone = I["business_phone_number"]
         CFacebook = I["connected_fb_page"]
         MutualFollowedBy = I["edge_mutual_followed_by"]["count"]
-        FacebookID = I["fbid"]
+        FacebookID = I["fbid"] #HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
         HasAREffect = I["has_ar_effects"]
         HasChannel = I["has_channel"]
         HasClips = I["has_clips"]
         HasGuide = I["has_guides"]
         HideLAndV = I["hide_like_and_view_counts"]
         JoinedRecently = I["is_joined_recently"]
-        InfoList = [Biography, Link, Followers, Follows, FullName, Id, IsBusiness, IsProfessional, IsPrivate, IsVerified, Username, Posts, BAdress, BCategory, BContactMethod, BEmail, BPhone, CFacebook, MutualFollowedBy, FacebookID, HasAREffect, HasChannel, HasClips, HasGuide, HideLAndV, JoinedRecently]
+        InfoList = [Biography, Link, Followers, Follows, FullName, Id, IsBusiness, IsProfessional, IsPrivate, IsVerified, Username, Posts, BAdress, BCategory, BContactMethod, BEmail, BPhone, CFacebook, MutualFollowedBy, HasAREffect, HasChannel, HasClips, HasGuide, HideLAndV, JoinedRecently]
     else:
-        #           0          1     2          3        4         5   6           7               8          9           10        11     12       13         14              15      16      17         18                19          20           21          22        23        24         25
+        #           0          1     2          3        4         5   6           7               8          9           10        11     12       13         14              15      16      17         18                19           20          21        22        23         24
         InfoList = [Biography, Link, Followers, Follows, FullName, Id, IsBusiness, IsProfessional, IsPrivate, IsVerified, Username, Posts]
     Export(instructions, InfoList, rowN)
 
@@ -115,14 +120,14 @@ def makeFile(instructions): #Teableau excel de base
         ExcelSheet.cell(row = 1, column = 18, value = 'Business Phone Number')
         ExcelSheet.cell(row = 1, column = 19, value = 'Connected Facebook Page')
         ExcelSheet.cell(row = 1, column = 20, value = 'Mutual Followed By')
-        ExcelSheet.cell(row = 1, column = 21, value = 'Facebook ID')
-        ExcelSheet.cell(row = 1, column = 22, value = 'Has Effects')
-        ExcelSheet.cell(row = 1, column = 23, value = 'Has Channel')
-        ExcelSheet.cell(row = 1, column = 24, value = 'Has Clips')
-        ExcelSheet.cell(row = 1, column = 25, value = 'Has Guide')
-        ExcelSheet.cell(row = 1, column = 26, value = 'Hide Like and View Count')
-        ExcelSheet.cell(row = 1, column = 27, value = 'Has joined Recently')
-        fileInfos(28)
+        #ExcelSheet.cell(row = 1, column = 21, value = 'Facebook ID')
+        ExcelSheet.cell(row = 1, column = 21, value = 'Has Effects')
+        ExcelSheet.cell(row = 1, column = 22, value = 'Has Channel')
+        ExcelSheet.cell(row = 1, column = 23, value = 'Has Clips')
+        ExcelSheet.cell(row = 1, column = 24, value = 'Has Guide')
+        ExcelSheet.cell(row = 1, column = 25, value = 'Hide Like and View Count')
+        ExcelSheet.cell(row = 1, column = 26, value = 'Has joined Recently')
+        fileInfos(27)
     else:
         fileInfos(14)
     ExcelFile.save(instructions[2]+instructions[0].replace('.', '_')+'_'+instructions[1]+'.xlsx')
@@ -146,7 +151,7 @@ def GetLists(instructions): #On récupère les listes abonnés/abonnements visé
         print('{} Extracting followers list of {} profile'.format(instructions[6][0], bold(instructions[0])))
         TargetList = TargetName.get_followers() #on recupère les followers
     elif instructions[1] == 'following':
-        print('{} Extracting following list of {} profile'.format(instructions[6][2], bold(instructions[0])))
+        print('{} Extracting following list of {} profile'.format(instructions[6][0], bold(instructions[0])))
         TargetList = TargetName.get_followees() #on récupère les followings
     for F in TargetList:
         FollList.append(F.username) #on ajoute chaques compte suivi / qui suit à la liste FollList
