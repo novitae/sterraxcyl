@@ -30,16 +30,17 @@ Detailed usage : `sterraxcyl [-h] [-a] [-d D] [-p P] -t T -u U`
 ```python
   -h, --help          #show help message and exit
   -a, --all-infos     #will write down the account extra informations that the program originaly ignores (see further)
+  -c, --csv           #export in csv format instead of excel
   -d D, --delay D     #delay in seconds between detailed infos requests (by default 0)
   -p P, --path P      #folder path where files will be exported and the credentials stored (by default in "sterraxcyl/")
   -t T, --target T    #what do you want to export ("followers", "following" or "both")
   -u U, --username U  #the instagram username of the aimed account
- #MORE TO BE ADDED SOON (tor usage for long lists, csv format, quick report ... feel free to send me ideas (contact on my github profile))
+ #MORE TO BE ADDED SOON (tor usage for long lists, quick report ... feel free to send me ideas (contact method on my github profile))
 ```
 
 **The program isn't very fast**, espacially for long lists (~ 20 min for 1000 followers).  
 But it has **never been blocked by instagram servers**, the longer list extracted was of 1400 followers.  
-Slowly but surely as we say.
+Slowly but surely as we say. _if you get blocked, it probably comes from your account, log with another one._
 
 # What infos are exported ?
 By defaut :  
