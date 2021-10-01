@@ -1,4 +1,4 @@
-#sterraxcyl v1.2.0 - Oct. 1 2021 https://github.com/novitae/sterraxcyl
+#sterraxcyl v1.2.0 - Oct. 1 2021 - https://github.com/novitae/sterraxcyl
 
 import json, os, time, re, csv
 import argparse, openpyxl, requests
