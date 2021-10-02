@@ -1,5 +1,5 @@
  # S T E R R A X C Y L
-## A python program that allows you to put in an excel table followers and/or following of an aimed account, with detailed infos on them ([see further](https://github.com/novitae/sterraxcyl#what-infos-are-exported-)).
+## A python program that allows you to put in an excel/csv table followers and/or following of an aimed account, with detailed infos on them ([see further](https://github.com/novitae/sterraxcyl#what-infos-are-exported-)).
 Very useful for OSINT on instagram accounts to determine a social circle of an aimed account.  
 It is an alternative to [Export List of Followers from Instagram](https://chrome-stats.com/d/hcdbfckhdcpepllecbkaaojfgipnpbpb), that has been zucced.
 ### Here is the result for the accounts followed by instagram :
