@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sterraxcyl',
-    version = '1.2.0',
+    version = '1.3',
     description = 'OSINT tool to export followers and/or following details of an instagram account to an excel table',
     long_description = 'OSINT tool to export followers and/or following details of an instagram account to an excel table, see README of https://github.com/novitae/sterraxcyl',
     author = 'novitae',
@@ -12,6 +12,6 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     packages = find_packages(),
-    install_requires = ['argparse', 'datetime', 'instaloader', 'openpyxl', 'requests', 'string-color', 'tqdm'],
+    install_requires = ['argparse', 'datetime', 'instaloader', 'openpyxl', 'requests', 'requests_futures', 'string-color', 'tqdm'],
     entry_points = {'console_scripts': ['sterra = sterraxcyl.core:main', 'sterraxcyl = sterraxcyl.core:main',]}
 )

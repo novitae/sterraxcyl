@@ -1,279 +1,205 @@
-#sterraxcyl v1.2.0 - Oct. 1 2021 https://github.com/novitae/sterraxcyl
+#sterraxcyl v1.3.0 - Oct. 6 2021 - https://github.com/novitae/sterraxcyl
 
-import json, os, time, re, csv
-import argparse, openpyxl, requests
+import json, os, time, re
+from sterraxcyl import files
+import argparse, requests
 from stringcolor import *
 from tqdm import tqdm
-from datetime import datetime, date
+from datetime import datetime
 from instaloader import instaloader
+L = instaloader.Instaloader()
 
-def MakeExcel(instructions): #Teableau excel de base
-    def fileInfos(x):
-        ExcelSheet.cell(row = 1, column = x, value = 'S T E R R A X C Y L')
-        ExcelSheet.cell(row = 2, column = x, value = '=HYPERLINK("{}", "{}")'.format('https://github.com/novitae', '** Made By novitae **')).style='Hyperlink'
-        ExcelSheet.cell(row = 4, column = x, value = 'Targeted account :')
-        ExcelSheet.cell(row = 5, column = x, value = '=HYPERLINK("https://www.instagram.com/{}/", "{}")'.format(instructions[0], instructions[0])).style='Hyperlink'
-        ExcelSheet.cell(row = 6, column = x, value = 'List :')
-        ExcelSheet.cell(row = 7, column = x, value = instructions[1])
-        ExcelSheet.cell(row = 9, column = x, value = 'Date :')
-        ExcelSheet.cell(row = 10, column = x, value = date.today().strftime("%b-%d-%Y")+datetime.now().strftime(" %H:%M"))
-    
-    ExcelFile = openpyxl.Workbook()
-    ExcelSheet = ExcelFile[ExcelFile.sheetnames[0]]
-    ExcelSheet.cell(row = 1, column = 1, value = 'ID')
-    ExcelSheet.cell(row = 1, column = 2, value = 'Username')
-    ExcelSheet.cell(row = 1, column = 3, value = 'FullName')
-    ExcelSheet.cell(row = 1, column = 4, value = 'Page')
-    ExcelSheet.cell(row = 1, column = 5, value = 'Biography')
-    ExcelSheet.cell(row = 1, column = 6, value = 'IsPrivate')
-    ExcelSheet.cell(row = 1, column = 7, value = 'Followers')
-    ExcelSheet.cell(row = 1, column = 8, value = 'Following')
-    ExcelSheet.cell(row = 1, column = 9, value = 'Posts')
-    ExcelSheet.cell(row = 1, column = 10, value = 'External Link')
-    ExcelSheet.cell(row = 1, column = 11, value = 'IsBusiness')
-    ExcelSheet.cell(row = 1, column = 12, value = 'IsProfessional')
-    ExcelSheet.cell(row = 1, column = 13, value = 'IsVerified')
-    if instructions[7]:
-        ExcelSheet.cell(row = 1, column = 14, value = 'Business Adress')
-        ExcelSheet.cell(row = 1, column = 15, value = 'Business Category')
-        ExcelSheet.cell(row = 1, column = 16, value = 'Business Contact Method')
-        ExcelSheet.cell(row = 1, column = 17, value = 'Business Email')
-        ExcelSheet.cell(row = 1, column = 18, value = 'Business Phone Number')
-        ExcelSheet.cell(row = 1, column = 19, value = 'Connected Facebook Page')
-        ExcelSheet.cell(row = 1, column = 20, value = 'Mutual Followed By')
-        ExcelSheet.cell(row = 1, column = 21, value = 'Has Effects')
-        ExcelSheet.cell(row = 1, column = 22, value = 'Has Channel')
-        ExcelSheet.cell(row = 1, column = 23, value = 'Has Clips')
-        ExcelSheet.cell(row = 1, column = 24, value = 'Has Guide')
-        ExcelSheet.cell(row = 1, column = 25, value = 'Hide Like and View Count')
-        ExcelSheet.cell(row = 1, column = 26, value = 'Has joined Recently')
-        fileInfos(27)
-    else:
-        fileInfos(14)
-    ExcelFile.save(instructions[2]+instructions[0].replace('.', '_')+'_'+instructions[1]+'.xlsx')
-
-def ExportExcel(instructions, InfoList, rowN):
-    fileName = instructions[2]+instructions[0].replace('.', '_')+'_'+instructions[1]+'.xlsx'
-    ExcelFile = openpyxl.load_workbook(filename = fileName)
-    ExcelSheet = ExcelFile[ExcelFile.sheetnames[0]]
-    ExcelSheet.cell(row = rowN, column = 1, value = int(InfoList[5]))
-    ExcelSheet.cell(row = rowN, column = 2, value = InfoList[10])
-    ExcelSheet.cell(row = rowN, column = 3, value = InfoList[4])
-    ExcelSheet.cell(row = rowN, column = 4, value = '=HYPERLINK("{}", "{}")'.format('https://www.instagram.com/{}/'.format(InfoList[10]), "Account")).style='Hyperlink'
-    ExcelSheet.cell(row = rowN, column = 5, value = InfoList[0])
-    ExcelSheet.cell(row = rowN, column = 6, value = InfoList[8])
-    ExcelSheet.cell(row = rowN, column = 7, value = int(InfoList[2]))
-    ExcelSheet.cell(row = rowN, column = 8, value = int(InfoList[3]))
-    ExcelSheet.cell(row = rowN, column = 9, value = int(InfoList[11]))
-    if InfoList[1] == None:
-        pass
-    else:
-        ExcelSheet.cell(row = rowN, column = 10, value = '=HYPERLINK("{}", "{}")'.format(InfoList[1], InfoList[1])).style='Hyperlink'
-    ExcelSheet.cell(row = rowN, column = 11, value = InfoList[6])
-    ExcelSheet.cell(row = rowN, column = 12, value = InfoList[7])
-    ExcelSheet.cell(row = rowN, column = 13, value = InfoList[9])
-    if instructions[7]:
-        ExcelSheet.cell(row = rowN, column = 14, value = InfoList[12])
-        ExcelSheet.cell(row = rowN, column = 15, value = InfoList[13])
-        ExcelSheet.cell(row = rowN, column = 16, value = InfoList[14])
-        ExcelSheet.cell(row = rowN, column = 17, value = InfoList[15])
-        ExcelSheet.cell(row = rowN, column = 18, value = InfoList[16])
-        if InfoList[17] == None:
-            pass
+def GetInfoPage(FollList):
+    open(inst['path']+inst['username'].replace('.', '_')+'_'+inst['target']+'.csv', 'w').close()
+    if inst['a_csv']: #WRITES THE CULUMN NAMES IN CSV FILE
+        if inst['a_allinfos']:
+            ColumnName = {'Id': 'ID', 'Username': 'Username', 'FullName': 'FullName', 'Page': 'Page', 'Biography': 'Biography', 'IsPrivate': 'IsPrivate', 'Followers': 'Followers', 'Follows': 'Following', 'Posts': 'Posts', 'Link': 'External Link', 'IsBusiness': 'IsBusiness', 'IsProfessional': 'IsProfessional', 'IsVerified': 'IsVerified', 'BAdress': 'Business Adress', 'BCategory': 'Business Category', 'BContactMethod': 'Business Contact Method', 'BEmail': 'Business Email', 'BPhone': 'Business Phone Number', 'CFacebook': 'Connected Facebook Page', 'MutualFollowedBy': 'Mutual Followed By', 'HasAREffect': 'Has Effects', 'HasChannel': 'Has Channel', 'HasClips': 'Has Clips', 'HasGuide': 'Has Guide', 'HideLAndV': 'Hide Like and View Count', 'JoinedRecently': 'Has Joined Recently'}
         else:
-            ExcelSheet.cell(row = rowN, column = 19, value = '=HYPERLINK("{}", "{}")'.format(InfoList[17], InfoList[17])).style='Hyperlink'
-        ExcelSheet.cell(row = rowN, column = 20, value = InfoList[18])
-        ExcelSheet.cell(row = rowN, column = 21, value = InfoList[19])
-        ExcelSheet.cell(row = rowN, column = 22, value = InfoList[20])
-        ExcelSheet.cell(row = rowN, column = 23, value = InfoList[21])
-        ExcelSheet.cell(row = rowN, column = 24, value = InfoList[22])
-        ExcelSheet.cell(row = rowN, column = 25, value = InfoList[23])
-        ExcelSheet.cell(row = rowN, column = 26, value = InfoList[24])
-    
-    ExcelFile.save(fileName)
+            ColumnName = {'Id': 'ID', 'Username': 'Username', 'FullName': 'FullName', 'Page': 'Page', 'Biography': 'Biography', 'IsPrivate': 'IsPrivate', 'Followers': 'Followers', 'Follows': 'Following', 'Posts': 'Posts', 'Link': 'External Link', 'IsBusiness': 'IsBusiness', 'IsProfessional': 'IsProfessional', 'IsVerified': 'IsVerified'}
+        files.ExportCSV(inst, ColumnName)
 
-def MakeCSV(instructions):
-    fieldnames = []
-    global writer
-    if instructions[7]:
-        fieldnames = ['ID', 'Username', 'FullName', 'Page', 'Biography', 'IsPrivate', 'Followers', 'Following', 'Posts', 'External Link', 'IsBusiness', 'IsProfessional', 'IsVerified', 'Business Adress', 'Business Category', 'Business Contact Method', 'Business Email', 'Business Phone Number', 'Connected Facebook Page', 'Mutual Followed By', 'Has Effects', 'Has Channel', 'Has Clips', 'Has Guide', 'Hide Like and View Count', 'Has joined Recently']
     else:
-        fieldnames = ['ID', 'Username', 'FullName', 'Page', 'Biography', 'IsPrivate', 'Followers', 'Following', 'Posts', 'External Link', 'IsBusiness', 'IsProfessional', 'IsVerified']
-    writer = csv.DictWriter(open(instructions[2]+instructions[0].replace('.', '_')+'_'+instructions[1]+'.csv', 'w', newline=''), fieldnames = fieldnames)
-    writer.writeheader()
+        files.MakeExcel(inst)
 
-def ExportCSV(instructions, InfoList, rowN):
-    if instructions[7]:
-        writer.writerow({'ID': InfoList[5], 'Username': InfoList[10], 'FullName': InfoList[4], 'Page': "https://www.instagram.com/{}/".format(instructions[0]), 'Biography': InfoList[0], 'IsPrivate': InfoList[8], 'Followers': InfoList[2], 'Following': InfoList[3], 'Posts': InfoList[11], 'External Link': InfoList[1], 'IsBusiness': InfoList[6], 'IsProfessional': InfoList[7], 'IsVerified': InfoList[9], 'Business Adress': InfoList[12], 'Business Category': InfoList[13], 'Business Contact Method': InfoList[14], 'Business Email': InfoList[15], 'Business Phone Number': InfoList[16], 'Connected Facebook Page': InfoList[17], 'Mutual Followed By': InfoList[18], 'Has Effects': InfoList[19], 'Has Channel': InfoList[20], 'Has Clips': InfoList[21], 'Has Guide': InfoList[22], 'Hide Like and View Count': InfoList[23], 'Has joined Recently': InfoList[24]})
-    else:
-        writer.writerow({'ID': InfoList[5], 'Username': InfoList[10], 'FullName': InfoList[4], 'Page': "https://www.instagram.com/{}/".format(instructions[0]), 'Biography': InfoList[0], 'IsPrivate': InfoList[8], 'Followers': InfoList[2], 'Following': InfoList[3], 'Posts': InfoList[11], 'External Link': InfoList[1], 'IsBusiness': InfoList[6], 'IsProfessional': InfoList[7], 'IsVerified': InfoList[9]})
+    def validResp(InfoPage):
+        if "'status': 'fail'" in str(InfoPage):
+            print(' {} Instagram noticed the spam activity. We advise you to change of account, stop using --express-mode,\n     use delays between your requests with the --delay. Here is the response :\n'.format(inst['logos'][5]))
+            print(InfoPage)
+            return False
+        else:
+            return True
 
-def ConvertInfos(instructions, I, rowN):
-    try:
-        I = I["graphql"]["user"]
-    except KeyError:
-        if I['spam']:
-            print('[{}] Instagram noticed a suspicious activity.\nWe advise you to change of account, and to use delays between your requests with "-d" arg.'.format(cs('!', 'Red3')))
-            exit()
-    Biography = I["biography"]
-    Link = I["external_url"]
-    Followers = I["edge_followed_by"]["count"]
-    Follows = I["edge_follow"]["count"]
-    FullName = I["full_name"]
-    Id = I["id"]
-    IsBusiness = I["is_business_account"]
-    IsProfessional = I["is_professional_account"]
-    IsPrivate = I["is_private"]
-    IsVerified = I["is_verified"]
-    Username = I["username"]
-    Posts = I["edge_owner_to_timeline_media"]["count"]
-    if instructions[7]:
-        BAdress = I["business_address_json"]
-        BCategory = I["business_category_name"]
-        BContactMethod = I["business_contact_method"]
-        BEmail = I["business_email"]
-        BPhone = I["business_phone_number"]
-        CFacebook = I["connected_fb_page"]
-        MutualFollowedBy = I["edge_mutual_followed_by"]["count"]
-        HasAREffect = I["has_ar_effects"]
-        HasChannel = I["has_channel"]
-        HasClips = I["has_clips"]
-        HasGuide = I["has_guides"]
-        HideLAndV = I["hide_like_and_view_counts"]
-        JoinedRecently = I["is_joined_recently"]
-        InfoList = [Biography, Link, Followers, Follows, FullName, Id, IsBusiness, IsProfessional, IsPrivate, IsVerified, Username, Posts, BAdress, BCategory, BContactMethod, BEmail, BPhone, CFacebook, MutualFollowedBy, HasAREffect, HasChannel, HasClips, HasGuide, HideLAndV, JoinedRecently]
-    else:
-        #           0          1     2          3        4         5   6           7               8          9           10        11     12       13         14              15      16      17         18                19           20          21        22        23         24
-        InfoList = [Biography, Link, Followers, Follows, FullName, Id, IsBusiness, IsProfessional, IsPrivate, IsVerified, Username, Posts]
-    if instructions[9]:
-        ExportCSV(instructions, InfoList, rowN)
-    else:
-        ExportExcel(instructions, InfoList, rowN)
-
-def GetInfoPage(instructions, FollList):
-    if instructions[9]:
-        MakeCSV(instructions)
-    else:
-        MakeExcel(instructions)
     rowN = 1 #Ligne à partir de laquelle on écrit les données (+1 ligne ajoutée à ce compte)
-    Progression = tqdm(FollList)
-    Progression.set_description("{} {} of each {} of the list ".format(instructions[6][3], bold('Getting infos'),instructions[1]))
-    for F in Progression: #Pour chaques nom d'utilisateur dans la liste d'utilisateur qui suit / suivit
-        time.sleep(instructions[3])
-        InfoPage = requests.get('https://www.instagram.com/{}/channel/?__a=1'.format(F),headers = {'User-Agent': instructions[5], 'Referer': 'https://www.instagram.com/'}, cookies = instructions[4])
-        InfoPage = json.loads(InfoPage.text)
-        rowN += 1
-        ConvertInfos(instructions, InfoPage, rowN)
 
-def GetLists(instructions): #On récupère les listes abonnés/abonnements visés
-    TargetName = instaloader.Profile.from_username(instructions[8].context, instructions[0]) #On vise le compte ciblé
+    if inst['a_express'] and len(FollList) > 200: #EXPRESS MODE DEACTIVATED OVER 200 ACCS
+        inst['a_express'] = None
+        print(' {} Express mode deactivated because the target list is more than 200 usernames. 200 usernames is a limit over wich you have\n     99% chances of getting blocked by instagram with express mode. You might even get blocked before reaching the limit.'.format(inst['logos'][5]))
+
+    if inst['a_express']: #EXPRESS MODE
+        from requests_futures import sessions
+        with sessions.FuturesSession() as session:
+            InfoPages = [session.get('https://www.instagram.com/{}/channel/?__a=1'.format(F), headers = {'User-Agent': inst['useragent'], 'Referer': 'https://www.instagram.com/'}, cookies = inst['cookies']) for F in FollList]
+
+            Progression = tqdm(InfoPages)
+            Progression.set_description(" {} {} of each {} of the list ".format(inst['logos'][3], bold('Getting infos'), inst['target']))
+            for I in Progression:
+                InfoPage = json.loads(I.result().content)
+                rowN += 1
+                if validResp(InfoPage):
+                    files.ConvertInfos(inst, InfoPage, rowN)
+                else:
+                    exit()
+
+    else: #NORMAL MODE
+        Progression = tqdm(FollList)
+        Progression.set_description(" {} {} of each {} of the list ".format(inst['logos'][3], bold('Getting infos'), inst['target']))
+
+        for F in Progression: #Pour chaques nom d'utilisateur dans la liste d'utilisateur qui suit / suivit
+            time.sleep(inst['delay'])
+            InfoPage = requests.get('https://www.instagram.com/{}/channel/?__a=1'.format(F),headers = {'User-Agent': inst['useragent'], 'Referer': 'https://www.instagram.com/'}, cookies = inst['cookies']) #ssl = False ?
+            InfoPage = json.loads(InfoPage.text)
+            rowN += 1
+            if validResp(InfoPage):
+                files.ConvertInfos(inst, InfoPage, rowN)
+            else:
+                exit()
+
+
+def GetLists(): #On récupère les listes abonnés/abonnements visés
+    TargetName = instaloader.Profile.from_username(L.context, inst['username']) #On vise le compte ciblé
     FollList = []
-    if instructions[1] == 'followers':
-        print('{} Extracting followers list of {} profile'.format(instructions[6][0], bold(instructions[0])))
+    if inst['target'] == 'followers':
+        print(' {} Extracting followers list of {} ...'.format(inst['logos'][0], bold(inst['username'])))
         TargetList = TargetName.get_followers() #on recupère les followers
-    elif instructions[1] == 'following':
-        print('{} Extracting following list of {} profile'.format(instructions[6][0], bold(instructions[0])))
+    elif inst['target'] == 'following':
+        print(' {} Extracting following list of {} ...'.format(inst['logos'][0], bold(inst['username'])))
         TargetList = TargetName.get_followees() #on récupère les followings
     for F in TargetList:
         FollList.append(F.username) #on ajoute chaques compte suivi / qui suit à la liste FollList
-    GetInfoPage(instructions, FollList) #on envoi FollList à GetInfo pour retirer les infos des ces comptes
+    print('     Extracted a list of {} {}.'.format(bold(len(FollList)), bold(inst['target'])))
+    
+    GetInfoPage(FollList)
+    
 
-def Target(instructions):
-    def exportPrint(instructions):
-        if instructions[9]:
-            print('{} csv '.format(instructions[6][4])+instructions[1]+' of '+bold(instructions[0])+' succesfully exported in "'+bold(instructions[2])+'" directory, under "'+bold(instructions[0].replace('.', '_')+'_'+instructions[1]+'.csv"'))
-        else:
-            print('{} xlsx '.format(instructions[6][1])+instructions[1]+' of '+bold(instructions[0])+' succesfully exported in "'+bold(instructions[2])+'" directory, under "'+bold(instructions[0].replace('.', '_')+'_'+instructions[1]+'.xlsx"'))
+def Target():
+    def exportPrint(): #PRINT INFOS SUR LA LISTE EXPORTÉE
+        print(' {} {} '.format(inst['logos'][4 if inst['a_csv'] else 1], 'csv' if inst['a_csv'] else 'xlsx')+inst['target']+' of '+bold(inst['username'])+' succesfully exported in "'+bold(inst['path']+(inst['username'].replace('.', '_'))+'_'+inst['target']+('.csv"' if inst['a_csv'] else '.xlsx"')))
+    
+    if inst['delay'] != 0: #PRINT LE DÉLAI SÉLÉCTIONNÉ
+        print(cs(' (', 'Black')+bold('D').cs('Black2', 'White')+cs(')', 'Black')+' Delay between detailed infos requests set to {} seconds'.format(inst['delay']))
+    
+    if os.path.exists(inst['path']) == False: #CRÉER LE DOSSIER D'EXPORT
+        os.mkdir(inst['path'])
 
-    if instructions[3] != None:
-        print(cs('(', 'Black')+bold('D').cs('Black2', 'White')+cs(')', 'Black')+' Delay between detailed infos requests set to {} seconds'.format(instructions[3]))
-    elif instructions[3] == None:
-        instructions[3] = 0
-    if instructions[1] != 'both':
-        GetLists(instructions) #Envoi de la liste choisie
-        exportPrint(instructions)
+    if inst['target'] != 'both': 
+        GetLists() #Envoi de la liste choisie
+        exportPrint()
     else: #si les deux listes sont choisies
-        instructions[1] = 'followers' #On prends les followers
-        GetLists(instructions)
-        exportPrint(instructions)
-        instructions[1] = 'following' #puis les followings
-        GetLists(instructions)
-        exportPrint(instructions)
-        instructions[1] = 'both' #puis on remet comme avant
+        inst['target'] = 'followers' #On prends les followers
+        GetLists()
+        exportPrint()
+        inst['target'] = 'following' #puis les followings
+        GetLists()
+        exportPrint()
 
-def Login(instructions):
+
+def Login():
+    path = os.path.join(os.path.dirname(__file__), 'identifiants.json')
+    err = inst['logos'][5]
     try:
-        if os.path.exists(instructions[2]) == False:
-            os.mkdir(instructions[2])
-        print(' {} logging ... '.format(instructions[6][2]), end='\r')
-        identifiants = open(instructions[2]+'identifiants.json', 'r') #Charge les informations de connections
-        id = json.load(identifiants)
+        print(' {} logging ... '.format(inst['logos'][2]), end='\r')
+        id = json.load(open(path, 'r'))
         link = 'https://www.instagram.com/accounts/login/'
-        login_url = 'https://www.instagram.com/accounts/login/ajax/'
 
         payload = {'username': id['username'],  'enc_password': f'#PWD_INSTAGRAM_BROWSER:0:{int(datetime.now().timestamp())}:'+id['password'], 'queryParams': {}, 'optIntoOneTap': 'false' }
 
         with requests.Session() as s:
-            s.headers = {'user-agent': instructions[5]}
+            s.headers = {'user-agent': inst['useragent']}
             s.headers.update({"Referer": link})
             r = s.get(link)
             csrf = re.findall(r"csrf_token\":\"(.*?)\"", r.text)[0]
-            r = s.post(login_url, data = payload, headers = {'user-agent': instructions[5], 'x-requested-with': 'XMLHttpRequest', 'referer': 'https://www.instagram.com/accounts/login/', 'x-csrftoken': csrf })
+            r = s.post('https://www.instagram.com/accounts/login/ajax/', data = payload, headers = {'user-agent': inst['useragent'], 'x-requested-with': 'XMLHttpRequest', 'referer': 'https://www.instagram.com/accounts/login/', 'x-csrftoken': csrf })
 
             if str(r.status_code) == '200':
                 reponseData = json.loads(r.text)
                 if reponseData['user'] and reponseData['authenticated'] and reponseData['status'] == 'ok': #connecté
-                    instructions[4] = r.cookies.get_dict() #ajout des cookies dans instructions
-                    instructions[8].login(id['username'], id['password']) #Se connecte avec instaloader
-                    print('                       ', end='\r')
-                    print('{} Succesfully logged on {} instagram account !'.format(instructions[6][2], bold(id["username"])))
-                    Target(instructions)
+                    inst['cookies'] = r.cookies.get_dict() #ajout des cookies dans inst
                     time.sleep(1)
+                    L.login(id['username'], id['password']) #se connecte avec instaloader
+                    print('                        ', end='\r')
+                    print(' {} Succesfully logged on {} instagram account !'.format(inst['logos'][2], bold(id["username"])))
+                    
+                    Target()
+
                     s.close()
-                    print('{} Closed requests session'.format(instructions[6][0]))
-                elif reponseData['user'] == False: #username pas valide
-                    print('[{}] Wrong username !'.format(cs('!', 'Red3')))
-                elif reponseData['authenticated'] == False: #pas authentifié
-                    print('[{}] Not authentificated !'.format(cs('!', 'Red3')))
+                    print(' {} Closed requests session'.format(inst['logos'][0]))
+
                 else:
-                    print('[{}] Unknown error, here is the response:\n'.format(cs('!', 'Red3'))+reponseData)
+                    print(' {} Error, here is the response:\n'.format(err)+reponseData)
+                    exit()
             else:
-                print('[{}] Unknown error, here is the response:\n'.format(cs('!', 'Red3'))+r.text)
+                print(' {} Unknown error, here is the response:\n'.format(err)+r.text)
+                exit()
 
     except FileNotFoundError:
-        username = input('['+cs('?', 'Violet')+'] Enter an instagram username == >> ')
-        password = input('['+cs('?', 'Violet')+'] Enter its password == >> ')
-        credentials = open(instructions[2]+'/identifiants.json', 'w')
+        username = input(' {} Enter an instagram username == >> '.format(inst['logos'][6]))
+        password = input(' {} Enter its password == >> '.format(inst['logos'][6]))
+        credentials = open(path, 'w')
         credentials.write(json.dumps({'username': username, 'password': password}))
-        credentials.close()
-        print('{} Credentials are stored in "identifiants.json", in the "{}" directory.'.format(instructions[6][0], bold(instructions[2])))
-        Login(instructions)
+        print(' {} Credentials are stored in "{}" file.\n     You can now launch again, it sould work.'.format(inst['logos'][0], bold(path)))
+        
 
 def main():
+    #LOGO
     igLogo = bold('i').cs('DodgerBlue2', 'Black')+bold('n').cs('SlateBlue2', 'Black')+bold('s').cs('SlateBlue', 'Black')+bold('t').cs('Pink4', 'Black')+bold('a').cs('LightPink3', 'Black')+bold('g').cs('SandyBrown', 'Black')+bold('r').cs('Gold', 'Black')+bold('a').cs('Yellow2', 'Black')+bold('m').cs('Yellow', 'Black')
     exLogo = bold('e').cs('White', 'DarkGreen')+bold('x').cs('White', 'Green4')+bold('c').cs('White', 'Green4')+bold('e').cs('White', 'DarkGreen')+bold('l').cs('White', 'Green4')+bold('.').cs('White', 'DarkGreen')+bold('x').cs('White', 'Green4')+bold('l').cs('White', 'Green4')+bold('s').cs('White', 'Green4')+bold('x').cs('White', 'DarkGreen')
+    csLogo = bold('f').cs('White', 'DarkOrange3')+bold('o').cs('White', 'DarkOrange')+bold('l').cs('White', 'Orange2')+bold('l').cs('White', 'DarkOrange3')+bold('o').cs('White', 'OrangeRed')+bold('w').cs('White', 'DarkOrange')+bold('.').cs('White', 'Orange2')+bold('c').cs('White', 'OrangeRed')+bold('s').cs('White', 'DarkOrange3')+bold('v').cs('White', 'DarkOrange')
+    print('~ v.1.3 ~ ~ '+exLogo+'  < < <  '+igLogo+'  > > >  '+csLogo+' ~ ~ GPL-3 ~')
+    print('~ \\ \\ \\ ~ ~ > > > > > > > > > '+cs('*sterraxcyl', 'SkyBlue2').underline()+' < < < < < < < < < ~ ~ / / / ~')
+    print('[ '+bold('*')+' ]\\ \\  '+cs('made by ', 'MediumPurple6')+bold('aet').cs('MediumPurple6')+cs(' $ https://github.com/novitae/sterraxcyl', 'MediumPurple6')+'  / / /  ~')
 
-    print('~   ≈  ~ >=>', igLogo, cs('>', 'LightGrey9', 'Black'), bold('S T E R R A X C Y L').cs('LightGrey9', 'Black').underline(), cs('>', 'LightGrey9', 'Black'), exLogo, '<=<  ~   ≈   ~\n  ~   ≈   ~  ≈>', cs('made  By', 'Grey')+'  '+cs('https://github.com/novitae', 'LightSkyBlue2').underline(), '< <≈  ~ ~  ≈   ~')
-
-    logos = [cs('|', 'DeepSkyBlue5')+bold('§').cs('LightGoldenrod2', 'DeepSkyBlue5')+cs('|', 'LightGoldenrod2'), cs('|', 'Green4')+cs('X', 'White', 'Green4')+cs('|', 'Green4'), cs('|', 'LightSalmon2')+cs('o', 'White', 'DeepPink4')+cs('|', 'MediumOrchid'), cs('|', 'Black')+bold('R').cs('Black2', 'White')+cs('|', 'Black'), cs('|', 'Orange')+bold('c').cs('White', 'Orange')+cs('|', 'Orange')]
-    #0 python 1 excel 2 insta 3 request 4 csv
-
-    AChoices = ["followers", "following", "both"]
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--all-infos', action='store_true', help='will write down the account extra informations that the program originaly ignores')
-    parser.add_argument('-c', '--csv', action='store_true', help='export in csv format instead of excel')
-    parser.add_argument('-d', '--delay', metavar='D', type=int, help='delay in seconds between detailed infos requests')
-    parser.add_argument('-p', '--path', metavar='P', help='folder path where files will be exported and the credentials stored (by default in "sterraxcyl/")')
-    parser.add_argument('-t', '--target', metavar='T', choices=AChoices, help='what do you want to export ("followers", "following" or "both")', required=True)
-    parser.add_argument('-u', '--username', metavar='U', help='the instagram username of the aimed account', required=True)
+    #ARGS
+    parser = argparse.ArgumentParser(add_help=False)
+    required = parser.add_argument_group('required arguments')
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-a', '--all-infos', action='store_true', help='writes down the account extra informations that the program originaly ignores')
+    optional.add_argument('-c', '--csv', action='store_true', help='exports in csv format instead of excel')
+    optional.add_argument('-d', '--delay', metavar='D', type=int, help='delay in seconds between detailed infos requests')
+    optional.add_argument('-e', '--express-mode', action='store_true', help='sends ultra fast requests to get the table faster; deactivated if more than 200 usernames in lists')
+    optional.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='show help message and exit')
+    optional.add_argument('-p', '--path', metavar='P', help='directory path where export the files (by default in your module path)')
+    required.add_argument('-t', '--target', metavar='T', choices=["followers", "following", "both"], help='what do you want to export ("followers", "following" or "both")', required=True)
+    required.add_argument('-u', '--username', metavar='U', help='the instagram username of the aimed account', required=True)
     args = parser.parse_args()
 
-    useragent = 'Instagram 206.1.0.30.118 (iPhone; CPU iPhone OS 15 like Mac OS X, fr-fr) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1'
-    instructions = [args.username, args.target, args.path, args.delay, None, useragent, logos, args.all_infos, instaloader.Instaloader(), args.csv]
-    #               0              1            2          3           4     5          6      7               8                          9
-    if instructions[2] == None:
-        instructions[2] = 'sterraxcyl/'
-    Login(instructions)
+    #INFORMATION LIST INITIATION
+    global inst
+    inst = {
+        'username': args.username,
+        'target': args.target,
+        'path': os.path.join(os.path.dirname(__file__))+'/export/' if args.path == None else args.path,
+        'delay': 0 if args.delay == None else args.delay,
+        'cookies': None,
+        'useragent': 'Instagram 206.1.0.30.118 (iPhone; CPU iPhone OS 15 like Mac OS X, fr-fr) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1',
+        'logos': [
+            cs('|', 'DeepSkyBlue5')+bold('§').cs('LightGoldenrod2', 'DeepSkyBlue5')+cs('|', 'LightGoldenrod2'), #Python     0
+            cs('|', 'Green4')+cs('X', 'White', 'Green4')+cs('|', 'Green4'),                                     #Excel      1
+            cs('|', 'LightSalmon2')+cs('o', 'White', 'DeepPink4')+cs('|', 'MediumOrchid'),                      #Instagram  2
+            cs('|', 'SeaGreen2')+bold('$').cs('White', 'DarkGrey')+cs('|', 'LightSalmon'),                      #Requests   3
+            cs('|', 'Orange')+bold('c').cs('White', 'Orange')+cs('|', 'Orange'),                                #CSV        4
+            cs('|', 'Red2')+bold('!').cs('White', 'Red2')+cs('|', 'Red2'),                                      #!          5
+            cs('|', 'Violet')+bold('?').cs('White', 'Violet')+cs('|', 'Violet'),                                #?          6
+            cs('|', 'DarkSeaGreen9')+bold('+').cs('DarkSeaGreen9', 'White')+cs('|', 'DarkSeaGreen9')            #+          7
+            ],
+        'a_allinfos': True if args.all_infos else False,
+        'a_csv': True if args.csv else False,
+        'a_express': True if args.express_mode else False
+    }
+
+    if os.path.exists(inst['path']) == False:
+        os.mkdir(inst['path'])
+
+    Login()
 
 if __name__ == '__main__':
     main()
