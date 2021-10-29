@@ -107,4 +107,4 @@ sterra --> writes the args and headers         logs in with requests, then retri
         the json are then extracted    ---> and each infos contained in the list
         and placed in a list.               are written in their specific column.
 ```
-_don't hesistate to contact me if you have idea of things to add to this program ! discord `aet#8014` twitter `meakaaet`_
+_don't hesistate to contact me if you have idea of things to add to this program ! discord `aet#5349` twitter `meakaaet`_
