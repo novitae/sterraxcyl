@@ -3,7 +3,7 @@
 ### Allows you to analyse someone's followers, following, and mutuals, with these functions:
 - 📥 __Export of the followers / following lists (with their details) to excel and csv,__
 - 📊 __A probbaility function to determine the close social circle of your target.__
-- ℹ️ __More informations [here](https://github.com/novitae/sterraxcyl/blob/main/README.md#notes).__  
+- ℹ️ __More informations [here](https://github.com/novitae/sterraxcyl/blob/main/README.md#-notes).__  
   
 _Sterra have been recently updated, with a lot of new features, but have not been tested on every systems. Everything works, but not handled bugs or errors could happen. If it happen to you, please report it to the Issues section. Thanks :)_
 ### ♻️ Also a great alternative to [Export List of Followers from Instagram](https://chrome-stats.com/d/hcdbfckhdcpepllecbkaaojfgipnpbpb), that has been killed.  
