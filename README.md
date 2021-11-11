@@ -79,7 +79,7 @@ sterra -u kyliejenner -t following -lcrd USERNAME PASSWORD
 ```
 ⬇️ Same than before, but in __express mode__, and with a lot __more details__ exported (see further will --all-infos) in a __csv__ instea of excel:
 ```
-sterra -u kyliejenner -t following -sssid SESSIONID -e -f csv --all-infos
+sterra -u kyliejenner -t following -ssid SESSIONID -e -f csv --all-infos
 ```
 ⬇️ __No exports__, but will print the __10 highest probabilities__ for each account following chrstianpedroza that he follows back of __being a personnal accounts__:
 ```
@@ -92,6 +92,7 @@ sterra -u chrstianpedroza -t both -sssid -a -p desktop/OSINT/ --descending --siz
 # 📌 Notes
 - [Here](https://skylens.io/blog/how-to-find-your-instagram-session-id) is a tutorial on how you can find your "__sessionid__".
 - If you want to extract lists __without express mode__, __it will take a long time__. I advise to do something else while the program does the job.
+- If your password contains special characters (and it should...) such as "!", you may enclose it between quotes.
 - Even if instagram never blocked an account used by sterra (from all the test i made, and for the people who tested for me), __it is better if you use an account made specially for the occasion__. __I do not recommend using your personnal account__ !
 - The account you will use must have __2FA disabled__.
 - If the target __account is private__, __you must be following it__ to extract data of it.
