@@ -21,3 +21,17 @@ $ Sterraxyl Changelog - https://github.com/novitae/sterraxcyl
 	change the argparse help menu to a better arguments organization display
 	placed the default export directory in the module directory
 	placed the credential storing directory in the module directory
+
+2.0 $ Nov. 11 2021 - Rebuilt
+	removed instaLoader from the module. it was user to retrieve followers and following of the target account.
+	- now the program makes by itself the requests to the api to retrieve followers and following.
+	removed the file storing credentials, replacing it by a sessionid or username and password function.
+	now checking if target account exists.
+	checking ssid validity.
+	placed the exporting module inside the core file to avoid any errors of package import.
+	built the core script as a python module, to be able to:
+	- scrape followers and following of an account
+	- retrieve the sessionid of an account with its username and password
+	added a function to see probabilities for accounts of being personnal accounts
+	added the by userid target.
+	now asking what to do if the program gets blocked but stores already a lot of extracted informations.
