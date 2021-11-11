@@ -83,11 +83,11 @@ sterra -u kyliejenner -t following -ssid SESSIONID -e -f csv --all-infos
 ```
 ⬇️ __No exports__, but will print the __10 highest probabilities__ for each account following chrstianpedroza that he follows back of __being a personnal accounts__:
 ```
-sterra -u chrstianpedroza -t mutuals -sssid -a --size 10 --do-not-export
+sterra -u chrstianpedroza -t mutuals -ssid -a --size 10 --do-not-export
 ```
 ⬇️ __Export at desktop/OSINT/ followers and following__ of chrstianpedroza, and also print the __15 lowest probabilites of being personnal accounts__ in each lists.
 ```
-sterra -u chrstianpedroza -t both -sssid -a -p desktop/OSINT/ --descending --size 15
+sterra -u chrstianpedroza -t both -ssid -a -p desktop/OSINT/ --descending --size 15
 ```
 # 📌 Notes
 - [Here](https://skylens.io/blog/how-to-find-your-instagram-session-id) is a tutorial on how you can find your "__sessionid__".
