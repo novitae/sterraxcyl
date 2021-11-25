@@ -8,6 +8,7 @@
 ## Here is the result for the accounts followed by [Mark Zuckerberg](https://www.instagram.com/zuck/), then for [Kylie Jenner](https://www.instagram.com/kyliejenner/) :
 ![](https://i.imgur.com/UYjVzLF.png)
 ![](https://i.imgur.com/XV6GKiz.png)
+### 🦺 Big changes are coming soon, curently working on the wiki for this new version, because it will be much complicated to use.
 ## 📥 Installation
 - Via __PyPI__  
 ```
