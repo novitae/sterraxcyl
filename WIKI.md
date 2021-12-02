@@ -1,15 +1,15 @@
 # Sterra WIKI (v2.1)
 ### 🔭 A SOCMINT tool to get infos from an Instagram acc via its Followers / Following
 ## 🗒 Summary
-- [__What is sterra ?__](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#-what-is-sterra-)
-- [__Examples of usage__](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#-examples-of-usage)
-- [__Usage__](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#-usage)
-  - [Export module](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#export)
-  - [Analyse module](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#analyse)
-  - [Compare module](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#compare)
-  - [History module](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#history)
-  - [Convert module](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#convert)
-- [__Additional notes__](https://github.com/novitae/STERRADEV/blob/main/WIKI.md#additional-notes)
+- [__What is sterra ?__](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#-what-is-sterra-)
+- [__Examples of usage__](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#-examples-of-usage)
+- [__Usage__](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#-usage)
+  - [Export module](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#export)
+  - [Analyse module](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#analyse)
+  - [Compare module](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#compare)
+  - [History module](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#history)
+  - [Convert module](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#convert)
+- [__Additional notes__](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#additional-notes)
 
 # ❓ What is sterra ?
 ### It is a __new way to make SOCMINT__ on instagram accounts:  
@@ -126,7 +126,8 @@ __help__:
 -h or --help
 ```
 __part__: If you have been blocked during the follow(ers|ing) information extraction by instagram before, and selected "2 - Export what have been exported as a part", copy the path it gave you (it should look like -> followers#289309762.json), and use it as following (default -> None);
-(If your first export command target was `both` or `mutuals`, use the target of the list it was extracting when it got blocked.)
+(If your first export command target was `both` or `mutuals`, use the target of the list it was extracting when it got blocked.)  
+(The is an example of its usage [here](https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#-examples-of-usage)
 ```python
 --part "PATH_GIVEN"
 ```
