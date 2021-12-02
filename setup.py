@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sterra',
-    version = '2.1.3',
+    version = '2.1.4',
     description = 'OSINT tool to work with follower/following list of instagram users.',
     long_description = 'OSINT tool to work with follower/following list of instagram users, see README of https://github.com/novitae/sterraxcyl',
     author = 'novitae',
