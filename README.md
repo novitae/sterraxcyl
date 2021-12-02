@@ -24,6 +24,7 @@ pip install sterra
 git clone https://github.com/novitae/sterraxcyl
 cd sterraxcyl
 python setup.py install
+# if it fails, use via PyPI
 ```  
 
 # 🛠 Usage:
