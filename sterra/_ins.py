@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 def keskonfé(rtn):
     while True:
-        kskfé = str(input(_pri.Interrrogation()+f'Instagram blocked our requests during the process.\n    Do you prefer:\n    1 - Continue with what have been extracted,\n    2 - Export what have been exported as a part (link to part informations on wiki),\n    3 - Stop the program.\n    --> '))
+        kskfé = str(input(_pri.Interrrogation()+f'Instagram blocked our requests during the process.\n    Do you prefer:\n    1 - Continue with what have been extracted,\n    2 - Export what have been exported as a part (https://github.com/novitae/sterraxcyl/blob/main/WIKI.md#optional-arguments-optional),\n    3 - Stop the program.\n    --> '))
         if kskfé == '1':
             return True
 
