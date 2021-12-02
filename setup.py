@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'sterraxcyl',
-    version = '2.0',
+    name = 'sterra',
+    version = '2.1.03',
     description = 'OSINT tool to work with follower/following list of instagram users.',
     long_description = 'OSINT tool to work with follower/following list of instagram users, see README of https://github.com/novitae/sterraxcyl',
     author = 'novitae',
@@ -13,5 +13,5 @@ setup(
     ],
     packages = find_packages(),
     install_requires = ['aiohttp', 'argparse', 'datetime', 'openpyxl', 'requests', 'string-color', 'tqdm'],
-    entry_points = {'console_scripts': ['sterra = sterraxcyl.core:main', 'sterraxcyl = sterraxcyl.core:main',]}
+    entry_points = {'console_scripts': ['sterra = sterra.core:main', 'sterraxcyl = sterra.core:main']}
 )

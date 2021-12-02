@@ -35,3 +35,15 @@ $ Sterraxyl Changelog - https://github.com/novitae/sterraxcyl
 	added a function to see probabilities for accounts of being personnal accounts
 	added the by userid target.
 	now asking what to do if the program gets blocked but stores already a lot of extracted informations.
+
+2.1 $ Nov. ? 2021 - New functions
+	splitted the program that was in a single file in many files to make the devellopment usage easier.
+	splitted the functions of the program in submodules; export, analyse, compare, history and convert
+	added the --part argument in export submodule:
+		if the extraction get blocked at a moment, by selecting "exporting as a part", and then filling the
+		same command as before but with arg --part "the path given", it will export only the remaining
+		username that haven't been extracted before.
+	added a wiki.
+	added the compare submodule,
+	the history submodule,
+	the convert submodule.
