@@ -3,7 +3,6 @@
 ### Allows you to analyse someone's followers, following, and mutuals, with these functions:
 - 📊 __A probability function to determine the close social circle of your target__,
 - 📥 __Export of the followers / following lists (with their details) to excel and csv,__
-- 📊 __A probbaility function to determine the close social circle of your target.__
 - ℹ️ __More informations [here](https://github.com/novitae/sterraxcyl/blob/main/README.md#-notes).__  
 - 💱 [__Check the WIKI__](https://github.com/novitae/sterraxcyl/wiki) for the detailed Usage.
   
