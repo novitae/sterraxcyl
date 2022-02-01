@@ -1,4 +1,5 @@
 # S T E R R A
+### _v2.2 to come soon, don't hesitate to open issues if you have suggestions ! Thanks !_
 ## 🔭 A SOCMINT tool to get infos from an Instagram acc via its Followers / Following
 ### Allows you to analyse someone's followers, following, and mutuals, with these functions:
 - 📊 __A probability function to determine the close social circle of your target__,
