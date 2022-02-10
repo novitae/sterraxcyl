@@ -48,9 +48,9 @@ cd sterraxcyl
 python setup.py install
 ```
 # 🌐 Wiki
-| [**Wiki**](https://github.com/novitae/SterraDev/wiki) | The home page of the Wiki |
+| [**Wiki**](https://github.com/novitae/sterraxcyl/wiki) | The home page of the Wiki |
 | :---: | :---: |
-| [**Basic Usage Wiki**](https://github.com/novitae/SterraDev/wiki/Basic-usage) | **The Wiki page to start using Sterra** |
+| [**Basic Usage Wiki**](https://github.com/novitae/sterraxcyl/wiki/Basic-usage) | **The Wiki page to start using Sterra** |
 
 # 📙 More
 - This tool have been made as an alternative of the Chrome extension [__export List of Followers from Instagram__](https://chrome-stats.com/d/hcdbfckhdcpepllecbkaaojfgipnpbpb) that has been killed for some ""[reasons](https://s.keepmeme.com/files/en_posts/20201223/delete-this-mark-zuckerberg-holding-gun-meme.jpg)"". It was made to export data on the accounts as sterra's export module does. This is the main inspiration.\
