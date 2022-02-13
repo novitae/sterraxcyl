@@ -76,7 +76,7 @@ def add_part(part_path:str=None, target:str=None) -> str:
             w.write(dumps(ACTUAL_HISTORY,indent=4))
         return Id, Path
 
-def get_part(part_option:str=True) -> tuple[str,str]:
+def get_part(part_option:str=True) -> tuple:
     if part_option is True:
         pKeys = list(PDICT.keys())
         return (pKeys[-1], PDICT[pKeys[-1]]["path"], PDICT[pKeys[-1]]["target"])

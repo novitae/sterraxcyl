@@ -65,10 +65,10 @@ class reader:
         self.file_path = file_path
         self.f:str = exman(_)._decompose_path(self.file_path)["format"]
 
-    def __call__(self) -> list[dict]:
+    def __call__(self) -> list:
         return getattr(self,self.f.upper())()
 
-    def XLSX(self) -> list[dict]:
+    def XLSX(self) -> list:
         excelfile = load_workbook(self.file_path)
         exclsheet = excelfile.active
 
@@ -89,14 +89,14 @@ class reader:
                 rtr.append(dico)
         return rtr
 
-    def CSV(self) -> list[dict]:
+    def CSV(self) -> list:
         with open(self.file_path,"r") as r:
             lines = r.read().split("\n")
             keys = lines[0].split(",")
             rtr = [{keys[n]:v.replace('</b>','\n').replace('</c>',',') for n, v in enumerate(preDict.split(","))} for preDict in lines[1:]]
         return rtr
 
-    def JSON(self) -> list[dict]:
+    def JSON(self) -> list:
         return loads(open(self.file_path,"r").read())
 
 # Remplir la case "containg" quand on fait une conversion

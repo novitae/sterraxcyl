@@ -19,7 +19,7 @@ IOS_UAGENT = choice(USER_AGENTS["ios"])
 global _
 _ = None
 
-def _credToSessID(creds:list) -> tuple[str or bool, str or bool]:
+def _credToSessID(creds:list) -> tuple:
     """Returns the sessionid of the credential given"""
     u, p = tuple(creds)
 
@@ -185,7 +185,7 @@ class _instagram:
         else:
             pass
     
-    def _followListScraper(self,h:str,has_next_page=True,act_attempts=0,att=3) -> list[str]:
+    def _followListScraper(self,h:str,has_next_page=True,act_attempts=0,att=3) -> list:
         """Scrapes the follow list (precised with the hash) of the target username
         Only "h" matters: hash"""
         targlist = _targListToHashesAndViceV(h)
@@ -230,7 +230,7 @@ class _instagram:
 
         return follow_list
 
-    def scrapeTargetLists(self) -> tuple[list,list]:
+    def scrapeTargetLists(self) -> tuple:
         """Returns the list to scrape depending on both or not, and on the data already known to block every error that could happen in the process"""
         follow_counts_list = [self.acc_infos[k] for k in ['followers','following']]
         if 0 in follow_counts_list:
