@@ -7,7 +7,7 @@ from sterra._sterrage_ import DAY_STRF, HOUR_STRF
 from sterra.exterra import exman
 
 class exporter:
-    def __init__(self, _:object, List:list[dict], file_path:str, Format:str, **kwargs:dict) -> None:
+    def __init__(self, _:object, List:list, file_path:str, Format:str, **kwargs:dict) -> None:
         self._ = _
 
         self.list = List
