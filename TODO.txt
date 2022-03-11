@@ -2,3 +2,4 @@
 - simplify the __a1 scraping save by writing in open(...,"a") mode
 - option saving credentials
 - saving profile pics option
+- module plus poussé pour voir si le compte privé est accessible
