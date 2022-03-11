@@ -1,0 +1,3 @@
+- writing usernames while they are scraped to don't loose the progression
+- simplify the __a1 scraping save by writing in open(...,"a") mode
+- option saving credentials
