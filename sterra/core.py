@@ -35,7 +35,9 @@ def EXPORT(**kwargs) -> bool:
     def scrape(targlist:str,flist:list) -> None:
         """Scrapes the data of usernames in flist and returns the id of the file in wich it has been written"""
         if kwargs.get("only_usernames"):
-            _.p(f"""{username}'s {targlist} usernames file exported under id: {str(bold(exporter([{"username":usn} for usn in flist],_,**kwargs)()))}""",logo=logo_to_choose)
+            fid, file_path = exman(_).custom_name(name=kwargs["name"], Format=Format, path=kwargs["path"]) if kwargs.get("name") else exman(_).classic_export(target=targlist, username=username, Format=kwargs["format"], path=kwargs["path"])
+            exporter(_=_,List=[{"username":usn} for usn in flist],file_path=file_path,Format=Format,**kwargs)()
+            _.p(f"""{username}'s {targlist} usernames file exported under id: {str(bold(fid))}""",logo=logo_to_choose)
 
         else:
             # if kwargs.get("auto_launckback"):
@@ -53,7 +55,7 @@ def EXPORT(**kwargs) -> bool:
                     _.r(RateLimitError(f"Part file exported under id: {str(bold(pid))}"))
                 
                 else: # Export classique
-                    fid, file_path = exman(_).custom_name(name=kwargs["name"], Format=kwargs["format"], path=kwargs["path"]) if kwargs.get("name") else exman(_).classic_export(target=targlist, username=username, Format=kwargs["format"], path=kwargs["path"])
+                    fid, file_path = exman(_).custom_name(name=kwargs["name"], Format=Format, path=kwargs["path"]) if kwargs.get("name") else exman(_).classic_export(target=targlist, username=username, Format=Format, path=kwargs["path"])
                     exporter(_=_, List=__a1List, file_path=file_path, Format=Format, **{"username":username,"target":targlist})()
                     _.p(f"""{username}'s {targlist} list exported under id: {str(bold(fid))}""",logo=logo_to_choose)
     
