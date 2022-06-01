@@ -8,8 +8,6 @@
     <a href="https://github.com/novitae/sterraxcyl/wiki"><img src="https://img.shields.io/badge/🌐-Wiki-inactive"></a>
 </h1>
 
-## ⚠️ Currently broken because the followers/following endpoints changed.
-
 ➡️ **Sterra's main function is to export lists of followers | following | mutuals from Instagram to excel | csv | json with informations on accounts**
 ![](https://i.imgur.com/9N8I7ak.png)
 *[National Geographic](https://www.instagram.com/natgeo/) following list under excel format*
