@@ -1,12 +1,9 @@
 from setuptools import setup, find_packages
 
-description = 'A SOCMINT tool to analyse instagram followers | following of a target, and get informations from it.'
 
 setup(
     name = 'sterra',
     version = '2.2.5',
-    description = description,
-    long_description = description,
     author = 'novitae',
     url = 'https://github.com/novitae/sterraxcyl',
     license = 'GNU General Public License v3 (GPLv3)',
