@@ -284,7 +284,7 @@ class _instagram:
             ret = {}
             isNotFound = False
             try:
-                d = d['graphql']['user']
+                d = d["data"]['user']
                 d["link"] = f'''https://www.instagram.com/{d["username"]}/'''
             except KeyError:
                 isNotFound = True
@@ -318,7 +318,7 @@ class _instagram:
             """Calls to ?__a=1 for each username in normal speed"""
             with requests.Session() as s:
                 for i, u in enumerate(lWithoutDone):
-                    rep = s.get(f'https://www.instagram.com/{u}/channel/?__a=1',headers={'User-Agent':USER_AGENT,'Referer':f'https://www.instagram.com/{u}'},cookies=self.cookies,allow_redirects=False)
+                    rep = s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer':f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False)
                     sleep(self.delay)
                     if rep.status_code == 200:
                         ret.append(outputDict(loads(rep.text)))
@@ -336,7 +336,7 @@ class _instagram:
             async with ClientSession() as s:
                 async def fetch(u:str):
                     """Process the request and append the result"""
-                    async with s.get(f'https://www.instagram.com/{u}/channel/?__a=1',headers={'User-Agent':USER_AGENT,'Referer': f'https://www.instagram.com/'},cookies=self.cookies,allow_redirects=False) as __a1:
+                    async with s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer': f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False) as __a1:
                         if __a1.status == 200:
                             ret.append(outputDict(await __a1.json()))
                             pbar.update(1)
