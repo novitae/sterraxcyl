@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
 
-
 setup(
     name = 'sterra',
-    version = '2.2.5',
+    version = '2.2.6',
     author = 'novitae',
     url = 'https://github.com/novitae/sterraxcyl',
     license = 'GNU General Public License v3 (GPLv3)',

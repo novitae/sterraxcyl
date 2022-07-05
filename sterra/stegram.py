@@ -1,4 +1,4 @@
-from re import findall, match
+from re import findall
 from tqdm import tqdm
 from time import sleep
 import requests
@@ -18,6 +18,12 @@ USER_AGENT = choice(USER_AGENTS["safari"])
 IOS_UAGENT = choice(USER_AGENTS["ios"])
 global _
 _ = None
+
+def _check_request_passed(**kwargs) -> requests.Response:
+    url = kwargs.get("url")
+    req = requests.get(**kwargs)
+    if req.history[-1].url == url:
+        return req
 
 def _credToSessID(creds:list) -> tuple:
     """Returns the sessionid of the credential given"""
@@ -90,6 +96,7 @@ def _targListToHashesAndViceV(s:str) -> list:
             return (k if s in v else v)
 
 class _instagram:
+    blocked = False
     def __init__(self, o:object, orgtar:str ,**kwargs:dict) -> None:
         global _
         _ = o
@@ -113,7 +120,13 @@ class _instagram:
                 _.r((UserNotFoundError("username" if kwargs.get("username") else "id") if username is None else RateLimitError))
         self.username = username
         
-        __a1 = requests.get(f'https://www.instagram.com/{username}/channel/?__a=1', cookies=self.cookies, headers={'User-Agent':USER_AGENT}, allow_redirects=False)
+        __a1 = _check_request_passed(
+            url = f'https://www.instagram.com/{username}/channel/?__a=1&__d=dis',
+            cookies = self.cookies,
+            headers = {'User-Agent':USER_AGENT}
+        )
+        if not __a1:
+            raise RateLimitError("__a1 line 123 is None")
         st = __a1.status_code
         if st != 200:
             _.r((UserNotFoundError("username" if kwargs.get("username") else "id") if st == 404 else RateLimitError))
@@ -124,8 +137,7 @@ class _instagram:
         self.acc_infos = {'id': j['id'], 'followers': j['edge_followed_by']['count'], 'following': j['edge_follow']['count']}
         self.target_ig_id = self.acc_infos["id"]
 
-        if j['is_private'] and int(j['edge_owner_to_timeline_media']['count']):
-            self._verifyPrivAccAccess()
+        self._verifyPrivAccAccess(j)
 
         _.p(f"""Target > {str(bold(self.username))} ({self.acc_infos["followers"]} followers, {self.acc_infos["following"]} following)""",logo="x")
 
@@ -162,28 +174,28 @@ class _instagram:
             return None
         return (True if self.want_express and possible_express else False)
 
-    def _checkSessidFormat(self,s) -> None:
+    def _checkSessidFormat(self, s: str) -> None:
         """Compares the sessionId to a regex and return True if it matches"""
-        if not match(r'[0-9]{1,32}%[0-9a-zA-Z]{16}%[0-9A-Z]{3,4}',s):
+        if not 3 <= s.count("%3A") <= 4:
+        # if not match(r'[0-9]{1,32}%[0-9a-zA-Z]{16}%[0-9A-Z]{3,4}',s):
             _.r(LoginError("Invalid sessid format"))
 
     def _checkvalidSessid(self,c:dict) -> None:
         """Raises loginError if the sessionId is not working"""
-        status = requests.get(f"https://www.instagram.com/{choice(ENDPOINTS_TEST_LIST)}",headers=self.default_h,cookies=c,allow_redirects=False).status_code
-        if status != 200:
+        r = _check_request_passed(
+            url=f"https://www.instagram.com/{choice(ENDPOINTS_TEST_LIST)}",
+            headers=self.default_h,
+            cookies=c
+        )
+        if not r or r.status_code != 200:
             _.r(LoginError("Invalid sessid"))
+        # if status.history[-1].url.startswith("https://www.instagram.com/accounts/login/") or status.status_code != 200:
 
-    def _verifyPrivAccAccess(self) -> None:
+    def _verifyPrivAccAccess(self, __a1: dict) -> None:
         """Works only if account has posts"""
-        page = requests.get(f"https://www.instagram.com/{self.username}/",headers=self.default_h,cookies=self.cookies,allow_redirects=False).text
-        try:
-            infos = loads(page.split("<script type=\"text/javascript\">window._sharedData = ")[-1].split(";</script>")[0])["entry_data"]["ProfilePage"][0]["graphql"]["user"]
-            if not infos["edge_owner_to_timeline_media"]["edges"]+infos["edge_felix_video_timeline"]["edges"]:
+        if __a1["is_private"]:
+            if not (__a1["followed_by_viewer"] or str(__a1["id"]) == self.used_account):
                 _.r(PrivateAccError(self.username))
-        except KeyError:
-            _.p("There might be an issue with json response in stegram:_verifyPrivAccAccess, please report it to the issue section. This issue isn't fatal.")
-        else:
-            pass
     
     def _followListScraper(self,h:str,has_next_page=True,act_attempts=0,att=3) -> list:
         """Scrapes the follow list (precised with the hash) of the target username
@@ -318,14 +330,18 @@ class _instagram:
             """Calls to ?__a=1 for each username in normal speed"""
             with requests.Session() as s:
                 for i, u in enumerate(lWithoutDone):
-                    rep = s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer':f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False)
-                    sleep(self.delay)
-                    if rep.status_code == 200:
-                        ret.append(outputDict(loads(rep.text)))
-                        pbar.update(1)
+                    if not self.blocked:
+                        rep = s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer':f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False)
+                        sleep(self.delay)
+                        if rep.status_code == 200:
+                            ret.append(outputDict(loads(rep.text)))
+                            pbar.update(1)
 
-                    elif rep.status_code == 404:
-                        ret.append(outputDict({},u))
+                        elif rep.status_code == 404:
+                            ret.append(outputDict({},u))
+
+                        else:
+                            self.blocked = True
                         
                     # if i > 3: break # volontary rate limit for tests
 
@@ -336,13 +352,17 @@ class _instagram:
             async with ClientSession() as s:
                 async def fetch(u:str):
                     """Process the request and append the result"""
-                    async with s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer': f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False) as __a1:
-                        if __a1.status == 200:
-                            ret.append(outputDict(await __a1.json()))
-                            pbar.update(1)
-                        
-                        elif __a1.status == 404:
-                            ret.append(outputDict({},u))
+                    if not self.blocked:
+                        async with s.get(f'https://i.instagram.com/api/v1/users/web_profile_info/?username={u}',headers={'User-Agent':USER_AGENT,'Referer': f'https://www.instagram.com/', "X-IG-App-ID": "936619743392459"},cookies=self.cookies,allow_redirects=False) as __a1:
+                            if __a1.status == 200:
+                                ret.append(outputDict(await __a1.json()))
+                                pbar.update(1)
+                            
+                            elif __a1.status == 404:
+                                ret.append(outputDict({},u))
+                            
+                            else:
+                                self.blocked = True
 
                 rq_corro = []
                 for u in lWithoutDone:
