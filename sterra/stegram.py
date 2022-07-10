@@ -22,8 +22,15 @@ _ = None
 def _check_request_passed(**kwargs) -> requests.Response:
     url = kwargs.get("url")
     req = requests.get(**kwargs)
-    if req.history[-1].url == url:
+    final_url = req.history[-1].url if len(req.history) > 1 else req.url
+    if final_url == url:
         return req
+
+    elif final_url.startswith("https://www.instagram.com/accounts/login/"):
+        _.r(LoginError("Invalid SessionId (_check_request_passed found /accounts/login redirect)"))
+    
+    else:
+        _.r(RateLimitError(f"Unknown redirect: {final_url}"))
 
 def _credToSessID(creds:list) -> tuple:
     """Returns the sessionid of the credential given"""
@@ -108,7 +115,7 @@ class _instagram:
             sessionid = _credToSessID(kwargs.get("login_credentials"))
 
         else:
-            self._checkSessidFormat(sessionid)
+            # self._checkSessidFormat(sessionid)
             self._checkvalidSessid({"sessionid":sessionid})
         self.cookies = {"sessionid":sessionid}
         self.used_account = sessionid.split("%")[0]
@@ -174,11 +181,11 @@ class _instagram:
             return None
         return (True if self.want_express and possible_express else False)
 
-    def _checkSessidFormat(self, s: str) -> None:
-        """Compares the sessionId to a regex and return True if it matches"""
-        if not 3 <= s.count("%3A") <= 4:
-        # if not match(r'[0-9]{1,32}%[0-9a-zA-Z]{16}%[0-9A-Z]{3,4}',s):
-            _.r(LoginError("Invalid sessid format"))
+    # def _checkSessidFormat(self, s: str) -> None:
+    #    """Compares the sessionId to a regex and return True if it matches"""
+    #    if not 3 <= s.count("%3A") <= 4:
+    #    # if not match(r'[0-9]{1,32}%[0-9a-zA-Z]{16}%[0-9A-Z]{3,4}',s):
+    #        _.r(LoginError("Invalid sessid format"))
 
     def _checkvalidSessid(self,c:dict) -> None:
         """Raises loginError if the sessionId is not working"""
