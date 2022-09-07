@@ -75,8 +75,8 @@ def EXPORT(**kwargs) -> bool:
     original_target = kwargs["target"]
     logo_to_choose = Format = kwargs["format"]
     scraper = _instagram(_, original_target, **kwargs)
-    
-    lists = scraper.scrapeTargetLists()
+
+    lists = scraper.scrapeTargetLists(kwargs.get("resume"))
     kwargs["username"] = username = scraper.username
 
     follow_list = (
@@ -310,7 +310,8 @@ def _parser() -> tuple:
     #                    help="relaunch automatically the scraping while all usernames haven't been scraped")
     exp_optional.add_argument('-h', '--help', action='help', default=SUPPRESS,
                         help='show this help message and exit')
-    
+    exp_optional.add_argument("--resume", action='store_true', help="resumes the previous followers list fetch")
+
     export_parser.set_defaults(wich="export")
 
     # compare

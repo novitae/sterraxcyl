@@ -1,6 +1,7 @@
 from re import findall
 from tqdm import tqdm
 from time import sleep
+import pickle
 import requests
 from random import randint, choice
 from aiohttp import ClientSession
@@ -18,6 +19,12 @@ USER_AGENT = choice(USER_AGENTS["safari"])
 IOS_UAGENT = choice(USER_AGENTS["ios"])
 global _
 _ = None
+
+class FollowListScraperResult:
+    def __init__(self, follow_list, is_complete, after):
+        self.follow_list = follow_list
+        self.is_complete = is_complete
+        self.after = after
 
 def _check_request_passed(**kwargs) -> requests.Response:
     url = kwargs.get("url")
@@ -203,8 +210,9 @@ class _instagram:
         if __a1["is_private"]:
             if not (__a1["followed_by_viewer"] or str(__a1["id"]) == self.used_account):
                 _.r(PrivateAccError(self.username))
-    
-    def _followListScraper(self,h:str,has_next_page=True,act_attempts=0,att=3) -> list:
+
+    def _followListScraper(self,h:str,has_next_page=True,act_attempts=0,att=3,after=None) -> FollowListScraperResult:
+        # return []
         """Scrapes the follow list (precised with the hash) of the target username
         Only "h" matters: hash"""
         targlist = _targListToHashesAndViceV(h)
@@ -214,6 +222,10 @@ class _instagram:
         follow_list = []
 
         var = {"id":self.target_ig_id,"first":50}
+
+        if after != None:
+            var["after"] = after
+
         params = {"query_hash":h,"variables":dumps(var)}
 
         def resolver(json_resp:dict) -> bool:
@@ -245,11 +257,11 @@ class _instagram:
 
         pbar.close()
         if has_next_page: # Travail est pas fini, donc qu'il y a eu une couille
-            _.r(RateLimitError("Rate limit happenning during list of follows scraping. Wait a bit, or change of login account."))
+            print("Rate limit happening during list of follows scraping. Wait a bit, or change of login account.")
 
-        return follow_list
+        return FollowListScraperResult(follow_list, not has_next_page, var.get("after"))
 
-    def scrapeTargetLists(self) -> tuple:
+    def scrapeTargetLists(self, resume) -> tuple:
         """Returns the list to scrape depending on both or not, and on the data already known to block every error that could happen in the process"""
         follow_counts_list = [self.acc_infos[k] for k in ['followers','following']]
         if 0 in follow_counts_list:
@@ -264,11 +276,38 @@ class _instagram:
         
             elif self.target_list == empty_usernames_list_name:
                 _.r(NoFollowError(f"{self.target_list.capitalize()} can't be scraped since it is empty"))
-            
-        scraping_hashes = _targListToHashesAndViceV(self.target_list)
-        follow_usernames = []
-        for hash in scraping_hashes:
-            follow_usernames.append(self._followListScraper(hash))
+
+        if resume:
+            print("Resuming from previous rate-limited session")
+            file = open("session.obj",'rb')
+            saved_session = pickle.load(file)
+            scraping_hashes = saved_session["scraping_hashes"]
+            follow_usernames = saved_session["follow_usernames"]
+            last_after = saved_session["after"]
+            file.close()
+        else:
+            scraping_hashes = _targListToHashesAndViceV(self.target_list)
+            follow_usernames = []
+            last_after = None
+        index = 0
+        while len(scraping_hashes) > 0:
+            hash = scraping_hashes[0]
+            result = self._followListScraper(hash, after = last_after)
+            last_after = None
+            follow_usernames.append(result.follow_list)
+            if not result.is_complete:
+                filehandler = open("session.obj","wb")
+                pickle.dump( \
+                    { \
+                        "follow_usernames": follow_usernames, \
+                        "scraping_hashes": scraping_hashes, \
+                        "after": result.after \
+                    } \
+                    , filehandler)
+                filehandler.close()
+                _.r(RateLimitError("Progress saved, rerun last command with the --resume flag"))
+            else:
+                del scraping_hashes[0]
 
         return tuple(follow_usernames)
 
