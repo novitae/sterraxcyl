@@ -61,7 +61,8 @@ How to bypass Instagram's (and also Threads or Facebook) SSL Pinning on iOS.
     - Change them so they are now: `1F00006B`
       ![](https://github.com/novitae/sterraxcyl/assets/85891169/7c135c54-2c6b-437b-ba8f-26900579303c)
     - Make a copy of the `Payload` folder, without changing its name, and put it somewhere.
-    - Go to `File` -> `Produce new executable`, don't change the name of the file, and save it to your copy of `Payload` -> `Instagram.app` -> `Frameworks` -> `FBSharedFramework` and replace the current file with the same name.
+    - Go to `File` -> `Produce new executable`, `Keep invalid signature`.
+    - Don't change the name of the file, and save it to your copy of `Payload` -> `Instagram.app` -> `Frameworks` -> `FBSharedFramework` and replace the current file with the same name.
   - **For demo version of Hopper**:
     - Note the end of the offset of the line (it is the dark blue long numbers at the left). For me it is `3deb78`.
     - Open the file `FBSharedFramework` in Hexfiend.
