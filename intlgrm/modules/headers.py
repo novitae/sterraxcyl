@@ -252,9 +252,11 @@ class DeviceStats:
             "x-fb-rmd": "recvTime=0;reqTime=0;tkn=;tts=0;ip=;v=;fail=NoUrlMap;cached=0",
             "X-FB-Friendly-Name": "api",
             "X-FB-Request-Analytics-Tags": self.request_analystics,
-            "X-Bloks-Version-Id": self.bkid,
+            "X-Bloks-Version-Id": self.bkid.hex(),
             "X-Tigon-Is-Retry": False,
-            "Priority": "u=2, i"
+            "Priority": "u=2, i",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
         }
     
     def to_dict(self) -> dict:
@@ -272,8 +274,6 @@ class DeviceStats:
             "request_analystics": self.request_analystics
         }
     
-    # accept_encoding: str = Field("gzip, deflate", alias="Accept-Encoding")
-
     def change_app_id(
         self,
         new_app_id: int = None
@@ -403,7 +403,8 @@ class Headers:
             **self.stats.to_headers(),
             **self.deviceid.to_headers(),
             **self.dyn_headers.to_headers(),
-            **self.content_type_from_body(has_body, content_type)
+            **self.content_type_from_body(has_body, content_type),
+            "Accept-Encoding": "gzip, deflate"
         }
         if ignore_headers:
             return dict(filter(lambda items: items[0] in ignore_headers, result.items()))
